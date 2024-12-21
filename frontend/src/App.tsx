@@ -28,8 +28,8 @@ function App() {
       <Container sx={{ py: 3, px: 2 }}>
         <Routes>
           <Route path='/' element={<Gists />} />
-          <Route path='/articles/:id' element={<ArticleViewer />} />
-          <Route path='/articles/new' element={<ArticleEditor />} />
+          <Route path='articles/:id' element={<ArticleViewer />} />
+          <Route path='articles/new' element={<ArticleEditor />} />
           <Route path='*' element={<Page404 />} />
         </Routes>
       </Container>
