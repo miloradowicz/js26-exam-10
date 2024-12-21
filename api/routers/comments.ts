@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
   }
 
   const body: CommentBody = {
-    article_id: req.body.title,
+    article_id: req.body.article_id,
     author: req.body.author ?? null,
     content: req.body.content,
   };
@@ -52,6 +52,7 @@ router.post('/', async (req, res) => {
       res.send(data[0]);
     }
   } catch (e) {
+    console.error(e);
     res.status(400).send({ error: 'Invalid article_id.' });
   }
 });
