@@ -2,6 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { api } from '../../api';
 import { Article, ArticleMutation, ArticleGist, ErrorResponse } from '../../types';
+import { RootState } from '../../app/store';
+import { clearCurrent } from '../slices/articlesSlice';
 
 export const loadGists = createAsyncThunk('articles/loadGists', async () => {
   const { data, status } = await api.get<ArticleGist[] | ErrorResponse>('news');
@@ -13,7 +15,9 @@ export const loadGists = createAsyncThunk('articles/loadGists', async () => {
   return data as ArticleGist[];
 });
 
-export const loadArticle = createAsyncThunk('articles/loadArticle', async (id: number) => {
+export const loadArticle = createAsyncThunk<Article, number, { state: RootState }>('articles/loadArticle', async (id, thunkAPI) => {
+  thunkAPI.dispatch(clearCurrent());
+
   const { data, status } = await api.get<Article | ErrorResponse>(`news/${id}`);
 
   if (status !== 200) {

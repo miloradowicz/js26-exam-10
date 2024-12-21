@@ -24,7 +24,11 @@ const initialState: State = {
 const slice = createSlice({
   name: 'articles',
   initialState,
-  reducers: {},
+  reducers: {
+    clearCurrent: (state) => {
+      state.currentArticle = undefined;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loadGists.pending, (state) => {
@@ -97,6 +101,8 @@ const slice = createSlice({
 });
 
 export const articlesReducer = slice.reducer;
+
+export const { clearCurrent } = slice.actions;
 
 export const selectGists = (state: RootState) => state.articlesReducer.gists;
 export const selectCurrentArticle = (state: RootState) => state.articlesReducer.currentArticle;

@@ -2,8 +2,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { api } from '../../api';
 import { Comment, CommentBody, ErrorResponse } from '../../types';
+import { RootState } from '../../app/store';
+import { clearCurrent } from '../slices/commentsSlice';
 
-export const loadComments = createAsyncThunk('comments/loadComments', async (article_id: number) => {
+export const loadComments = createAsyncThunk<Comment[], number, { state: RootState }>('comments/loadComments', async (article_id, thunkAPI) => {
+  thunkAPI.dispatch(clearCurrent());
+
   const { data, status } = await api.get<Comment[] | ErrorResponse>(`comments?news_id=${article_id}`);
 
   if (status !== 200) {

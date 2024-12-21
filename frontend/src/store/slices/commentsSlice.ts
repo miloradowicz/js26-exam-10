@@ -23,7 +23,11 @@ const initialState: State = {
 const slice = createSlice({
   name: 'comments',
   initialState,
-  reducers: {},
+  reducers: {
+    clearCurrent: (state) => {
+      state.currentComments = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loadComments.pending, (state) => {
@@ -82,6 +86,8 @@ const slice = createSlice({
 });
 
 export const commentsReducer = slice.reducer;
+
+export const { clearCurrent } = slice.actions;
 
 export const selectCurrentComments = (state: RootState) => state.commentsReducer.currentComments;
 export const selectLoading = (state: RootState) => state.commentsReducer.loading;
