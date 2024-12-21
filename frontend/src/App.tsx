@@ -7,6 +7,7 @@ import ArticleEditor from './containers/ArticleEditor/ArticleEditor';
 import Page404 from './containers/Page404/Page404';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import { selectLastError as selectArticlesLastError } from './store/slices/articlesSlice';
+import { selectLastError as selectCommentsLastError } from './store/slices/commentsSlice';
 import { useAppSelector } from './app/hooks';
 import { useEffect } from 'react';
 
@@ -14,13 +15,19 @@ function App() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const lastArticlesError = useAppSelector(selectArticlesLastError);
+  const lastCommentsError = useAppSelector(selectCommentsLastError);
 
   useEffect(() => {
     closeSnackbar();
+
     if (lastArticlesError) {
       enqueueSnackbar(lastArticlesError.message, { variant: 'error' });
     }
-  }, [lastArticlesError, enqueueSnackbar, closeSnackbar]);
+
+    if (lastCommentsError) {
+      enqueueSnackbar(lastCommentsError.message, { variant: 'error' });
+    }
+  }, [lastArticlesError, lastCommentsError, enqueueSnackbar, closeSnackbar]);
 
   return (
     <SnackbarProvider autoHideDuration={3000} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} maxSnack={1}>

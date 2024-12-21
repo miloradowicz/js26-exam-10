@@ -53,4 +53,4 @@ const ArticleListItem: FC<Props> = ({ id, title, image_url, publicized_at }) => 
   );
 };
 
-export default memo(ArticleListItem);
+export default memo(ArticleListItem, (prev, next) => prev.id === next.id);

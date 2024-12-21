@@ -38,4 +38,4 @@ const CommentListItem: FC<Props> = ({ id, article_id, author, content }) => {
   );
 };
 
-export default memo(CommentListItem);
+export default memo(CommentListItem, (prev, next) => prev.id === next.id);
