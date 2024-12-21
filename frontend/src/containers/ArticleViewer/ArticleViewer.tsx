@@ -10,6 +10,7 @@ import img404 from '../../assets/images/404.svg';
 import CommentList from '../../components/CommentList/CommentList';
 import CommentForm from '../../components/CommentForm/CommentForm';
 import { loadComments } from '../../store/thunks/commentsThunk';
+import { baseURL } from '../../constants';
 
 const ArticleViewer = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +36,7 @@ const ArticleViewer = () => {
         <>
           <Box sx={{ p: 2 }}>
             <Box sx={{ width: '30%' }}>
-              <img src={article.image_url ?? img404} alt={article.title} width='100%' />
+              <img src={article.image_url ? new URL(article.image_url, new URL('images/', baseURL)).href : img404} alt={article.title} width='100%' />
             </Box>
             <Typography variant='h5'>{article.title}</Typography>
             <Typography>At {dayjs(article.publicized_at).format('DD.MM.YYYY HH:mm')}</Typography>
