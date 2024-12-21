@@ -9,7 +9,7 @@ const ArticleList = () => {
   return (
     <Stack gap={1}>
       {gists.map((x) => (
-        <ArticleListItem id={x.id} title={x.title} image_url={x.image_url} publicized_at={x.publicized_at} />
+        <ArticleListItem key={x.id} id={x.id} title={x.title} image_url={x.image_url} publicized_at={x.publicized_at} />
       ))}
     </Stack>
   );

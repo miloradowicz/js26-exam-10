@@ -1,4 +1,4 @@
-import { Box, Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 import FileInput from '../../components/UI/FileInput/FileInput';
 import { LoadingButton } from '@mui/lab';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -77,7 +77,7 @@ const ArticleForm = () => {
       })
     );
 
-    setData((data) => ({ ...data, message: '', author: '' }));
+    setData((data) => ({ ...data, title: '', content: '' }));
 
     await dispatch(loadGists());
 
