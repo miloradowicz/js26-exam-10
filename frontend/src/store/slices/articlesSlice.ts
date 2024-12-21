@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loadArticle, loadGists, sendArticle } from '../thunks/articlesThunk';
+import { deleteArticle, loadArticle, loadGists, sendArticle } from '../thunks/articlesThunk';
 import { RootState } from '../../app/store';
 import { Article, ArticleGist } from '../../types';
 
@@ -8,6 +8,7 @@ interface State {
   currentArticle?: Article;
   loading: boolean;
   sending: boolean;
+  deleting: number[];
   lastError?: {
     message: string;
   };
@@ -17,6 +18,7 @@ const initialState: State = {
   gists: [],
   loading: false,
   sending: false,
+  deleting: [],
 };
 
 const slice = createSlice({
@@ -65,6 +67,31 @@ const slice = createSlice({
           state.lastError = { message: error.message };
         }
         state.sending = false;
+      })
+      .addCase(deleteArticle.pending, (state, { meta: { arg } }) => {
+        state.lastError = undefined;
+
+        if (!state.deleting.includes(arg)) {
+          state.deleting.push(arg);
+        }
+      })
+      .addCase(deleteArticle.fulfilled, (state, { meta: { arg } }) => {
+        const i = state.deleting.findIndex((x) => x === arg);
+
+        if (i >= 0) {
+          state.deleting.splice(i);
+        }
+      })
+      .addCase(deleteArticle.rejected, (state, { error, meta: { arg } }) => {
+        if (error.message !== undefined) {
+          state.lastError = { message: error.message };
+        }
+
+        const i = state.deleting.findIndex((x) => x === arg);
+
+        if (i >= 0) {
+          state.deleting.splice(i);
+        }
       });
   },
 });
@@ -75,4 +102,5 @@ export const selectGists = (state: RootState) => state.articlesReducer.gists;
 export const selectCurrentArticle = (state: RootState) => state.articlesReducer.currentArticle;
 export const selectLoading = (state: RootState) => state.articlesReducer.loading;
 export const selectSending = (state: RootState) => state.articlesReducer.sending;
+export const selectDeleting = (state: RootState) => state.articlesReducer.deleting;
 export const selectLastError = (state: RootState) => state.articlesReducer.lastError;
